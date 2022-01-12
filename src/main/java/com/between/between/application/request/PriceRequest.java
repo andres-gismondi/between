@@ -1,13 +1,18 @@
 package com.between.between.application.request;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class PriceRequest {
+
     private Date startDate;
     private Integer productId;
     private Long brandId;
 
-    public PriceRequest() {
+    public PriceRequest(Date startDate, Integer productId, Long brandId) {
+        this.startDate = startDate;
+        this.productId = productId;
+        this.brandId = brandId;
     }
 
     public Date getStartDate() {
