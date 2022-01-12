@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Repository
-public interface JPAMySQLDBRepository extends JpaRepository<List<Price>, Long> {
+public interface JPAMySQLDBRepository extends JpaRepository<Price, Long> {
 
     List<Price> findAllByStartDateAndProductIdAndBrandId(Date startDate, Integer productId, Long brandId);
 

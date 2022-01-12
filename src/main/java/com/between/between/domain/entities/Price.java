@@ -10,6 +10,10 @@ public class Price {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
     private Date startDate;
     private Date endDate;
     private Integer priceList;
@@ -24,6 +28,14 @@ public class Price {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Date getStartDate() {
