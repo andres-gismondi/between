@@ -1,25 +1,26 @@
 package com.between.between.application.request;
 
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class PriceRequest {
 
-    private Date startDate;
+    private LocalDateTime startDate;
     private Integer productId;
     private Long brandId;
 
-    public PriceRequest(Date startDate, Integer productId, Long brandId) {
+    public PriceRequest(LocalDateTime startDate, Integer productId, Long brandId) {
         this.startDate = startDate;
         this.productId = productId;
         this.brandId = brandId;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

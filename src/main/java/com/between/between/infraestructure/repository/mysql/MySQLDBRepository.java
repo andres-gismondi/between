@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -21,7 +21,7 @@ public class MySQLDBRepository implements PriceRepository {
     }
 
     @Override
-    public List<Price> findPrices(Date startDate, Integer productId, Long brandId) {
-        return this.jpaMySQLDBRepository.findAllByStartDateAndProductIdAndBrandId(startDate, productId, brandId);
+    public List<Price> findPrices(LocalDateTime startDate, Integer productId, Long brandId) {
+        return this.jpaMySQLDBRepository.findAllByProductIdAndBrandIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(productId, brandId, startDate, startDate);
     }
 }

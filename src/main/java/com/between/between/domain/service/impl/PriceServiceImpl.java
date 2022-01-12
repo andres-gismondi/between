@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class PriceServiceImpl implements PriceService {
 
-    Logger logger = LoggerFactory.getLogger(PriceServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PriceServiceImpl.class);
 
     private PriceRepository priceRepository;
     private PricesMapper pricesMapper;
