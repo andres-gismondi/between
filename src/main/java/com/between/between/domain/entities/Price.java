@@ -2,7 +2,6 @@ package com.between.between.domain.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,8 +19,22 @@ public class Price {
     private Integer priceList;
     private Integer productId;
     private BigDecimal price;
+    private Integer priority;
     @Column(name = "curr")
     private String currency;
+
+    public Price clone(Integer priceList) {
+        Price nPrice = new Price();
+        nPrice.setPriority(this.getPriority());
+        nPrice.setPrice(this.getPrice().multiply(BigDecimal.valueOf(priceList)));
+        nPrice.setPriceList(this.getPriceList());
+        nPrice.setCurrency(this.getCurrency());
+        nPrice.setBrand(this.getBrand());
+        nPrice.setProductId(this.getProductId());
+        nPrice.setStartDate(this.getStartDate());
+        nPrice.setEndDate(this.getEndDate());
+        return nPrice;
+    }
 
     public Long getId() {
         return id;
@@ -77,6 +90,14 @@ public class Price {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public String getCurrency() {
