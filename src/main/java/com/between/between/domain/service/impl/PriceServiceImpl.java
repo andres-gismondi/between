@@ -9,12 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -32,6 +33,10 @@ public class PriceServiceImpl implements PriceService {
     public PriceApplicationResponse getTotalPrice(PriceRequest request) {
         logger.info("Calculating pricing with [start_date:{}], [product_id:{}] and [brand_id:{}]", request.getStartDate(), request.getProductId(), request.getBrandId());
         List<Price> repositoryResponse = this.priceRepository.findPrices(request.getStartDate(), request.getProductId(), request.getBrandId());
+
+        if (CollectionUtils.isEmpty(repositoryResponse)) {
+            return new PriceApplicationResponse.PriceApplicationBuilder().build();
+        }
         return this.setTotalApplication(repositoryResponse, request.getProductId());
     }
 
@@ -49,7 +54,7 @@ public class PriceServiceImpl implements PriceService {
 
     private PriceApplicationResponse.PriceApplicationBuilder setDates(List<Price> prices, PriceApplicationResponse.PriceApplicationBuilder builder) {
         LocalDateTime startDate = prices.stream()
-                .min(Comparator.comparing(Price::getStartDate))
+                .max(Comparator.comparing(Price::getStartDate))
                 .get()
                 .getStartDate();
 
@@ -81,7 +86,7 @@ public class PriceServiceImpl implements PriceService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         logger.info("Setting total_value:{}", totalValues);
-        return builder.price(totalValues);
+        return builder.price(totalValues.setScale(2, RoundingMode.CEILING));
     }
 
 }
