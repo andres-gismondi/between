@@ -46,7 +46,7 @@ public class IntegrationTest {
         result.andExpect(jsonPath("$.end_application_date").value("2020-12-31T23:59:59"));
         result.andExpect(jsonPath("$.price_list").value("1"));
         result.andExpect(jsonPath("$.product_id").value("35455"));
-        result.andExpect(jsonPath("$.price").value("35.50"));
+        result.andExpect(jsonPath("$.price").value("35.5"));
     }
 
     @Test

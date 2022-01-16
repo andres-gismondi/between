@@ -1,5 +1,6 @@
 package com.between.between.domain.service.impl;
 
+import com.between.between.application.exceptions.PriceServiceException;
 import com.between.between.application.request.PriceRequest;
 import com.between.between.application.response.PriceApplicationResponse;
 import com.between.between.domain.entities.Price;
@@ -30,14 +31,20 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public PriceApplicationResponse getTotalPrice(PriceRequest request) {
+    public PriceApplicationResponse getTotalPrice(PriceRequest request) throws PriceServiceException {
         logger.info("Calculating pricing with [start_date:{}], [product_id:{}] and [brand_id:{}]", request.getStartDate(), request.getProductId(), request.getBrandId());
-        List<Price> repositoryResponse = this.priceRepository.findPrices(request.getStartDate(), request.getProductId(), request.getBrandId());
+        try{
+            List<Price> repositoryResponse = this.priceRepository.findPrices(request.getStartDate(), request.getProductId(), request.getBrandId());
 
-        if (CollectionUtils.isEmpty(repositoryResponse)) {
-            return new PriceApplicationResponse.PriceApplicationBuilder().build();
+            if (CollectionUtils.isEmpty(repositoryResponse)) {
+                logger.info("No products where found");
+                return new PriceApplicationResponse.PriceApplicationBuilder().build();
+            }
+            return this.setTotalApplication(repositoryResponse, request.getProductId());
+        } catch (Exception e) {
+            logger.error("Error getting prices with product_id: [{}]", request.getProductId(), e);
+            throw new PriceServiceException("Error getting prices", e);
         }
-        return this.setTotalApplication(repositoryResponse, request.getProductId());
     }
 
     private PriceApplicationResponse setTotalApplication(List<Price> prices, Integer productId) {

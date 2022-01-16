@@ -1,5 +1,6 @@
 package com.between.between.application.controller;
 
+import com.between.between.application.exceptions.PriceServiceException;
 import com.between.between.application.request.PriceRequest;
 import com.between.between.application.response.PriceApplicationResponse;
 import com.between.between.application.utils.DateUtils;
@@ -25,7 +26,7 @@ public class PricesController {
     @GetMapping()
     public ResponseEntity<PriceApplicationResponse> getPrices(@RequestParam(name = "start_date") String startDate,
                                                               @RequestParam(name = "product_id") Integer productId,
-                                                              @RequestParam(name = "brand_id") Long brandId) {
+                                                              @RequestParam(name = "brand_id") Long brandId) throws PriceServiceException {
         logger.info("Getting prices with: [start_date_:{}]", startDate);
         LocalDateTime startDateFormatted = DateUtils.dateFormatted(startDate);
         PriceApplicationResponse response = this.priceService.getTotalPrice(new PriceRequest(startDateFormatted,productId,brandId));
